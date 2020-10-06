@@ -7,13 +7,13 @@ colnames(periods) <- c('x', 'y', 'lo', 'hi')
 # # from hitting first 60 left leaning incline...
 # # find tan(\theta+30) using angle sum formula
 # # conclusion: there's nothing here
-old.x <- periods$x
-old.y <- periods$y
-
-periods$x <- 3*old.x-old.y
-periods$y <- 3*old.y+old.x
-
-periods <- periods[periods$x>0 & periods$y>0,]
+# old.x <- periods$x
+# old.y <- periods$y
+# 
+# periods$x <- 3*old.x-old.y
+# periods$y <- 3*old.y+old.x
+# 
+# periods <- periods[periods$x>0 & periods$y>0,]
 
 ## 0-30
 # old.x <- periods$x
