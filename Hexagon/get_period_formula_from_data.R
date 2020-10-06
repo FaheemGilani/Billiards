@@ -7,13 +7,13 @@ colnames(periods) <- c('x', 'y', 'lo', 'hi')
 # # from hitting first 60 left leaning incline...
 # # find tan(\theta+30) using angle sum formula
 # # conclusion: there's nothing here
-# old.x <- periods$x
-# old.y <- periods$y
-# 
-# periods$x <- 3*old.x-old.y
-# periods$y <- 3*old.y+old.x
-# 
-# periods[periods$x>0 & periods$y>0,]
+old.x <- periods$x
+old.y <- periods$y
+
+periods$x <- 3*old.x-old.y
+periods$y <- 3*old.y+old.x
+
+periods <- periods[periods$x>0 & periods$y>0,]
 
 ## 0-30
 # old.x <- periods$x
@@ -43,9 +43,9 @@ check_if_planar <- function(small.dat) {
   names(cp) <- c('x', 'y', 'period')
   if (sum(abs(cp))<10^(-5)) return(list(is.planar=FALSE, coefs=NA)) # sometimes cp is zero if they're colinear...
   if (abs(sum((d-a)*cp))==0) { # if planar
-    if ((cp[1]*cp[3]<0) & (cp[2]*cp[3]<0)) { # all real formulas should have positive coefs on x and y
+    #if ((cp[1]*cp[3]<0) & (cp[2]*cp[3]<0)) { # all real formulas should have positive coefs on x and y
       return(list(is.planar=TRUE, coefs=c(cp, 'k'=sum(cp*a))))
-    }
+    #}
   }
   return(list(is.planar=FALSE, coefs=NA))
 }
@@ -75,7 +75,7 @@ while (TRUE) {
   whether.planar.hi <- check_if_planar(dat[inds,-3])
   if (whether.planar.lo$is.planar & whether.planar.hi$is.planar) { # if hi and lo are both planar
     out <- remove_rows(dat, whether.planar.lo$coefs, whether.planar.hi$coefs) # find which points are on plane
-    if (sum(out[[2]])>40) { # at least this many points on plane... increase if finding bad planes
+    if (sum(out[[2]])>30) { # at least this many points on plane... increase if finding bad planes
       groups <- c(groups, list(rownames(dat)[out[[2]]]))
       planes.lo <- c(planes.lo, list(whether.planar.lo$coefs))
       planes.hi <- c(planes.hi, list(whether.planar.hi$coefs))
@@ -123,8 +123,6 @@ groups.presented <- cbind(plyr::laply(grouped_periods,
                     return(-v[c(2,1,3)])
                   })
       )
-
-
 
 # get modulo values for ones we know matter
 get_mod_vals <- function(c) { ## change this to llply if giving an error--this is assuming unique output
